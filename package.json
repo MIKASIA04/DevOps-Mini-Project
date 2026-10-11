@@ -1,0 +1,10 @@
+
+{
+  "name": "devops-health-checker",
+  "version": "1.0.0",
+  "description": "CI/CD with Docker and application health verification",
+  "scripts": {
+    "start": "node app.js",
+    "test": "node --test"
+  }
+}
