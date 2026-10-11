@@ -3,9 +3,11 @@ name: CI-CD and Health Verification
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   build-test-and-check:
@@ -13,10 +15,10 @@ jobs:
 
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 20
 
@@ -29,9 +31,7 @@ jobs:
       - name: Run Docker container
         run: docker run -d -p 3000:3000 --name health-app devops-health-check
 
-      - name: Verify application health
-        
-      - name: Verify Docker container health
+      - name: Verify Docker container health status
         run: |
           for i in {1..15}; do
             STATUS=$(docker inspect --format='{{.State.Health.Status}}' health-app)
