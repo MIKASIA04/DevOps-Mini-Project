@@ -11,7 +11,7 @@ function createServer() {
     if (req.url === "/") {
       res.writeHead(200, { "Content-Type": "text/html" });
       return res.end(`
-        <h1>DevOps Health Checker</h1>
+        <h1>DevOps Health Checker - CI/CD Enabled</h1>
         <p>Application is running successfully!</p>
         <a href="/health">Check Health</a>
       `);
