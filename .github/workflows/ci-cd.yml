@@ -30,14 +30,30 @@ jobs:
         run: docker run -d -p 3000:3000 --name health-app devops-health-check
 
       - name: Verify application health
+        
+      - name: Verify Docker container health
         run: |
-          for i in {1..10}; do
-            if curl -fsS http://localhost:3000/health; then
-              echo "Health check passed"
+          for i in {1..15}; do
+            STATUS=$(docker inspect --format='{{.State.Health.Status}}' health-app)
+            echo "Container health status: $STATUS"
+
+            if [ "$STATUS" = "healthy" ]; then
+              echo "Docker health check passed"
+              curl -fsS http://localhost:3000/health
+              echo
               exit 0
             fi
+
+            if [ "$STATUS" = "unhealthy" ]; then
+              echo "Container is unhealthy"
+              docker logs health-app
+              exit 1
+            fi
+
             sleep 2
           done
-          echo "Health check failed"
+
+          echo "Timed out waiting for healthy container"
+          docker inspect health-app
           docker logs health-app
           exit 1
